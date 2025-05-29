@@ -96,5 +96,22 @@ Render will then build and deploy your application. The necessary dependencies a
 *   **Voice Conversion App**: These instructions currently only cover the `gradio_tts_app.py`. Deployment for `gradio_vc_app.py` will be addressed separately.
 *   **Resource Allocation**: Depending on the size of the models and the computational requirements, you might need to adjust the Render instance type for optimal performance. The current setup uses a standard CPU instance.
 
+### Deploying the Voice Conversion App (`gradio_vc_app.py`)
+
+You can also deploy the voice conversion application as a separate service on Render:
+
+1.  **Follow the same initial steps** as for the TTS app (fork repository, go to Render Blueprint).
+2.  **Crucially, when Render asks which `render.yaml` to use (if it prompts, or if you're setting it up manually by pointing to a specific file path for the blueprint), you will need to specify `render-vc.yaml` instead of the default `render.yaml`.**
+    *   If deploying via "New Web Service" instead of a Blueprint, you would manually enter the details:
+        *   **Name**: `chatterbox-vc-app` (or your choice)
+        *   **Build Command**: `pip install --no-cache-dir -r requirements.txt`
+        *   **Start Command**: `python src/chatterbox/gradio_vc_app.py`
+3.  The service name will be `chatterbox-vc-app` (as defined in `render-vc.yaml`) or whatever you choose.
+4.  Click **Create New Web Service**.
+
+This will create a second, independent service for the voice conversion functionality. It will have its own URL.
+
+**Note**: This service uses the same `requirements.txt` as the TTS app. Model downloading behavior and resource considerations mentioned for the TTS app also apply here.
+
 # Disclaimer
 Don't use this model to do bad things. Prompts are sourced from freely available data on the internet.
