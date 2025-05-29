@@ -1,4 +1,5 @@
 import random
+import os
 import numpy as np
 import torch
 import gradio as gr
@@ -18,12 +19,26 @@ def set_seed(seed: int):
 
 def load_model():
     model = ChatterboxTTS.from_pretrained(DEVICE)
+    print(f"Model loaded: {model}")
+    if hasattr(model, 'model_dir'):
+        print(f"Attempting to inspect model_dir: {model.model_dir}")
+    if hasattr(model, 'cache_dir'):
+        print(f"Attempting to inspect cache_dir: {model.cache_dir}")
+    # You can also try printing the model's __dict__ if it's a custom class and might reveal paths
+    # print(f"Model __dict__: {model.__dict__}")
     return model
 
 
 def generate(model, text, audio_prompt_path, exaggeration, temperature, seed_num, cfgw):
     if model is None:
         model = ChatterboxTTS.from_pretrained(DEVICE)
+        print(f"Model loaded in generate: {model}")
+        if hasattr(model, 'model_dir'):
+            print(f"Attempting to inspect model_dir in generate: {model.model_dir}")
+        if hasattr(model, 'cache_dir'):
+            print(f"Attempting to inspect cache_dir in generate: {model.cache_dir}")
+        # You can also try printing the model's __dict__ if it's a custom class and might reveal paths
+        # print(f"Model __dict__ in generate: {model.__dict__}")
 
     if seed_num != 0:
         set_seed(int(seed_num))
@@ -77,4 +92,7 @@ if __name__ == "__main__":
     demo.queue(
         max_size=50,
         default_concurrency_limit=1,
-    ).launch(share=True)
+    ).launch(
+        server_name="0.0.0.0",
+        server_port=int(os.environ.get("PORT", 7860))
+    )
