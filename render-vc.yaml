@@ -5,9 +5,11 @@ services:
     pythonVersion: "3.9"
     region: oregon # Or any other preferred Render region like frankfurt
     buildCommand: "pip install --no-cache-dir -r requirements.txt ." # Uses the same requirements.txt
-    startCommand: "python src/chatterbox/gradio_vc_app.py" # Points to the VC app
+    startCommand: "python gradio_vc_app.py" # Points to the VC app
     envVars:
       - key: PYTHON_VERSION
         value: "3.9"
       - key: GRADIO_ENABLE_QUEUE
         value: "true"
+      - key: PYTHONPATH
+        value: src
