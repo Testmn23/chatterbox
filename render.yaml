@@ -4,7 +4,7 @@ services:
     env: python
     pythonVersion: "3.9"
     region: oregon # Or any other preferred Render region like frankfurt
-    buildCommand: "pip install --no-cache-dir -r requirements.txt"
+    buildCommand: "pip install --no-cache-dir -r requirements.txt ."
     startCommand: "python src/chatterbox/gradio_tts_app.py"
     envVars:
       - key: PYTHON_VERSION
